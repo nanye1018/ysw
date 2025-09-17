@@ -1,0 +1,904 @@
+﻿                        低光照下遥感目标检测的性能评价系统
+
+一、前端开发
+
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <script language="javascript">
+        function exec1(command) {
+            var ws = new ActiveXObject("WScript.Shell");
+            ws.run(command);
+        }
+    </script>
+    <style>
+        * {
+<!-- *选择器设置所有元素的        margin，padding 和 font-family-->
+            margin: 0;
+            padding: 0;
+            font-family: 'monospace';
+        }
+
+        .bg { <!-- .bg 选择器设置背景层，占据整个文档的宽度和高度-->
+
+            width: 100%;
+            height: 100%;
+            opacity: 0.7;
+            position: absolute;
+            left: 0px;
+            top: 10px;
+            z-index: -1; <!--置于最底层-->
+        }
+
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+
+        h1 {   <!-- 指定标题样式-->
+            text-align: center; <!--设置文本居中对齐   -->
+            margin: 50px; <!-- 设置标题与其他元素之间的距离-->
+            color: transparent; <!--设置文字颜色   -->
+            -webkit-text-stroke: 1px black; <!--添加黑色的文字轮廓   -->
+            letter-spacing: 0.04em; <!--设置文字间距-->
+        }
+                        低光照下遥感目标检测的性能评价系统
+
+
+        .box { <!--指定一个盒子样式        -->
+            margin: 20px auto; <!--设置盒子与其他元素之间的距离           -->
+            width: 450px; <!--设置盒子宽度    -->
+
+        }
+
+        .module { <!--指定了一个模块样式         -->
+            width: 450px; <!--设置宽度  -->
+            height: 50px; <!--设置高度  -->
+            margin-top: 50px; <!--设置模块与其他元素之间的距离           -->
+        }
+
+        .module>span { <!--指定模块的文本样式       -->
+            display: inline-block; <!-- 设置元素显示方式-->
+            height: 50px;  <!--设置元素高度     -->
+            line-height: 50px; <!--设置元素行高  -->
+            width: 150px; <!--设置元素宽度    -->
+            font-size: 20px; <!-- 设置字体大小-->
+            text-align: center; <!--设置文本居中对齐   -->
+        }
+
+        button { <!-- 指定一个按钮样式-->
+            border: 0; <!--设置边框样式    -->
+            margin: 50px 20px; <!--设置按钮与其他元素之间的距离           -->
+            text-transform: uppercase; <!--将文本转换为大写   -->
+            font-size: 20px; <!--设置字体大小  -->
+            font-weight: bold; <!--设置字体粗细  -->
+            padding: 15px 50px; <!--设置内边距  -->
+            border-radius: 50px; <!--设置边框圆角  -->
+            color: white; <!--设置字体颜色   -->
+            outline: none;//去除按钮轮廓线<!--  -->
+            position: relative; <!--设置元素定位方式   -->
+            width: 200px; <!--设置按钮宽度    -->
+            cursor: pointer; <!--设置鼠标悬停时的光标样式-->
+        }
+
+        button:before { <!-- 设置按钮的动画特效-->
+            content: '';
+            display: block;
+            background: linear-gradient(to left, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255,
+0.4) 50%); <!-- 使用线性渐变-->
+            Background0-size: 210% 100%; <!--设置背景大小   -->
+                        低光照下遥感目标检测的性能评价系统
+
+            background-position: right bottom; <!--设置背景位置 -->
+            height: 100%; <!--设置元素高度    -->
+            width: 100%; <!--设置元素宽度     -->
+            position: absolute; <!-- 设置元素定位方式-->
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            border-radius: 50px; <!--设置边框圆角  -->
+            transition: all 1s; <!--设置元素的过渡效果   -->
+            -webkit-transition: all 1s; <!--设置元素的 WebKit-->
+        }
+
+        .green {
+            background-image: linear-gradient(to right, #25aae1, #40e495);
+              <!--设置背景图像,线性渐变        -->
+            box-shadow: 0 4px 15px 0 rgba(49, 196, 190, 0.75);
+              <!--设置阴影效果     -->
+        }
+
+        .green:hover:before {
+            background-position: left bottom; <!--设置背景图像的位置，动态渐变-->
+        }
+    </style>
+</head>
+
+<body>
+    <img class="bg" id="bg" <!--页面背景图 -->
+
+src="https://images.pexels.com/photos/6405699/pexels-photo-6405699.jpeg?cs=srgb&dl=pexels
+-taryn-elliott-6405699.jpg&fm=jpg"
+        alt="">
+
+    <div id="header"> <!--显示一个标题-->
+        <h1>遥感目标检测的性能评价系统</h1>
+    </div>
+    <div class="box">
+    <!--多个 class 为”module”的 div 元素，每个   div 包含一个    span 标签和一个    button 标签，
+来运行不同的      Python 脚本-->
+        <!-- <div class="module"><span>ALL:</span><button onclick="exec1('python -i
+mAP/ALL.py')" class="green">运行
+                ALL</button></div> -->
+        <!-- <div class="module"><span>Interface:</span><button onclick="exec1('python -i
+mAP/Interface.py')"
+                        低光照下遥感目标检测的性能评价系统
+
+                class="green">运行
+                Interface</button></div> -->
+        <div class="module"><span>PR 曲线:</span><button onclick="exec1('python -i
+mAP/PR.py')" class="green">运行
+                PR</button></div>
+        <div class="module"><span>全类平均精确度:</span><button  onclick="exec1('python
+-i mAP/mAP.py')" class="green">运行
+                mAP</button></div>
+        <div class="module"><span>交并比:</span><button onclick="exec1('python -i
+mAP/IOU.py')" class="green">运行
+                IOU</button></div>
+        <div class="module"><span>非极大值抑制:</span><button onclick="exec1('python -i
+mAP/NMS.py')" class="green">运行
+                NMS</button></div>
+        <div class="module"><span>ROC 曲线:</span><button onclick="exec1('python -i
+mAP/ROC.py')" class="green">运行
+                ROC</button></div>
+    </div>
+    <script>
+        const bg = document.getElementById("bg")
+        const bgList = [
+
+'https://images.pexels.com/photos/6405699/pexels-photo-6405699.jpeg?cs=srgb&dl=pexels-tary
+n-elliott-6405699.jpg&fm=jpg',
+
+'https://images.pexels.com/photos/6608613/pexels-photo-6608613.jpeg?cs=srgb&dl=pexels-kar
+olina-grabowska-6608613.jpg&fm=jpg',
+
+'https://images.pexels.com/photos/6980281/pexels-photo-6980281.jpeg?cs=srgb&dl=pexels-rom
+an-odintsov-6980281.jpg&fm=jpg'
+        ]
+        setInterval(changeImg, 3000)
+        let i = 0//记录背景图的索引
+        function changeImg() {//循环更换页面背景图
+            if (i == bgList.length) {
+                i = 0
+            }
+            bg.src = bgList[i]
+            console.log(i)
+            i++
+        }
+    </script>
+
+</body>
+                        低光照下遥感目标检测的性能评价系统
+
+
+</html>
+
+二、后端开发
+
+(1)PR
+score_path = r"C:\Users\Desktop\mAP\pr_curve.txt" # 文件路径
+with open(score_path, 'r') as f:
+    files = f.readlines() # 读取文件
+lis_all = []
+for file in files:
+    _, _, s1, s2, s3 = file.strip().split(" ")
+    lis_all.append(s1)
+    lis_all.append(s2)
+    lis_all.append(s3)
+lis_order = sorted(set(lis_all)) # 记录所有得分情况，并去重从小到大排序，寻找各个阈值点
+macro_precis = []
+macro_recall = []
+for i in lis_order:
+    true_p0 = 0      # 真阳
+    true_n0 = 0      # 真阴
+    false_p0 = 0     # 假阳
+    false_n0 = 0     # 假阴
+
+    true_p1 = 0
+    true_n1 = 0
+    false_p1 = 0
+    false_n1 = 0
+
+    true_p2 = 0
+    true_n2 = 0
+    false_p2 = 0
+    false_n2 = 0
+    for file in files:
+        cls, pd, n0, n1, n2 = file.strip().split(" ") # 分别计算比较各个类别的得分，分开计算，
+                                           各自为二分类，       最后求平均，得出宏         pr
+        if float(n0) >= float(i) and cls == '0': # 遍历所有样本，第 0 类为正样本，其他类
+                                           为负样本，
+            true_p0 = true_p0 + 1    # 大于等于阈值，并且真实为正样本，即为真阳，
+        elif float(n0) >= float(i) and cls != '0': # 大于等于阈值，真实为负样本，即为假阳；
+            false_p0 = false_p0 + 1     # 小于阈值，真实为正样本，即为假阴
+        elif float(n0) < float(i) and cls == '0':
+            false_n0 = false_n0 + 1
+                        低光照下遥感目标检测的性能评价系统
+
+        if float(n1) >= float(i) and cls == '1': # 遍历所有样本，第 1 类为正样本，其他类
+                                           为负样本
+            true_p1 = true_p1 + 1
+        elif float(n1) >= float(i) and cls != '1':
+            false_p1 = false_p1 + 1
+        elif float(n1) < float(i) and cls == '1':
+            false_n1 = false_n1 + 1
+
+        if float(n2) >= float(i) and cls == '2': # 遍历所有样本，第 2 类为正样本，其他
+                                             类为负样本
+            true_p2 = true_p2 + 1
+        elif float(n2) >= float(i) and cls != '2':
+            false_p2 = false_p2 + 1
+        elif float(n2) < float(i) and cls == '2':
+            false_n2 = false_n2 + 1
+
+    prec0 = (true_p0+0.00000000001) / (true_p0 + false_p0 + 0.00000000001)
+    # 计算各类别的精确率，小数防止分母为                 0
+    prec1 = (true_p1+0.00000000001) / (true_p1 + false_p1 + 0.00000000001)
+    prec2 = (true_p2+0.00000000001) / (true_p2 + false_p2 + 0.00000000001)
+
+    recall0 = (true_p0+0.00000000001)/(true_p0+false_n0 + 0.00000000001)
+    # 计算各类别的召回率，小数防止分母为                 0
+    recall1 = (true_p1+0.00000000001) / (true_p1 + false_n1+0.00000000001)
+    recall2 = (true_p2+0.00000000001)/(true_p2+false_n2 + 0.00000000001)
+
+    precision = (prec0 + prec1 + prec2)/3
+    recall = (recall0 + recall1 + recall2)/3
+    # 多分类求得平均精确度和平均召回率，即宏                  macro_pr
+    macro_precis.append(precision)
+    macro_recall.append(recall)
+
+macro_precis.append(1)
+macro_recall.append(0)
+print(macro_precis)
+print(macro_recall)
+
+x = np.array(macro_recall)
+y = np.array(macro_precis)
+plt.figure()
+plt.xlim([-0.01, 1.01])
+plt.ylim([-0.01, 1.01])
+plt.xlabel('recall')
+plt.ylabel('precision')
+                        低光照下遥感目标检测的性能评价系统
+
+plt.title('PR curve')
+ynew = savgol_filter(y, 15, 1, mode= 'nearest')
+plt.plot(x, ynew, 'b', label = 'savgol')
+plt.show()
+
+(2) MAP
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
+PATH_TO_CKPT = 'model/frozen_inference_graph.pb'
+detection_graph = tf.Graph()
+with detection_graph.as_default():
+    od_graph_def = tf.compat.v1.GraphDef()
+    with tf.compat.v1.gfile.GFile(PATH_TO_CKPT, 'rb') as fid:
+        serialized_graph = fid.read()
+        od_graph_def.ParseFromString(serialized_graph)
+        tf.import_graph_def(od_graph_def, name='')
+
+with detection_graph.as_default():
+    with tf.compat.v1.Session(graph=detection_graph) as sess:
+        image_tensor = detection_graph.get_tensor_by_name('image_tensor:0')
+        detection_boxes = detection_graph.get_tensor_by_name('detection_boxes:0')
+        detection_scores = detection_graph.get_tensor_by_name('detection_scores:0')
+        detection_classes = detection_graph.get_tensor_by_name('detection_classes:0')
+        num_detections = detection_graph.get_tensor_by_name('num_detections:0')
+
+PATH_TO_IMAGES = 'images/'
+PREDICTED_PATH = 'predicted/'
+if not os.path.exists(PREDICTED_PATH):
+    os.makedirs(PREDICTED_PATH)
+    for filename in os.listdir(PATH_TO_IMAGES):
+        if filename.lower().endswith(
+                ('.bmp', '.dib', '.png', '.jpg', '.jpeg', '.pbm', '.pgm', '.ppm', '.tif', '.tiff')):
+            image_name = PATH_TO_IMAGES + filename
+            image = cv2.imread(image_name)
+            image_np = np.array(image).astype(np.uint8)
+            image_np_expanded = np.expand_dims(image_np, axis=0)
+            (boxes, scores, classes, num) = sess.run(
+                [detection_boxes, detection_scores, detection_classes, num_detections],
+                feed_dict={image_tensor: image_np_expanded})
+            img = cv2.cvtColor(np.array(image_np), cv2.COLOR_RGB2BGR)
+            shape = img.shape
+            p1 = (int(boxes[0][0][0] * shape[0]), int(boxes[0][0][1] * shape[1]))
+            p2 = (int(boxes[0][0][2] * shape[0]), int(boxes[0][0][3] * shape[1]))
+            with open(PREDICTED_PATH + "2007_" + filename[:-4] + ".txt", "w") as f:
+                        低光照下遥感目标检测的性能评价系统
+
+                f.write("instrument" + " " + str(round(scores[0][0], 6)) + " " + str(p1[::-1][0]) +
+" " + str(
+                    p1[::-1][1]) + " " + str(p2[::-1][0]) + " " + str(p2[::-1][1]) + "\n")
+
+PATH_TO_XML = 'annotations/'
+GROUND_TRUTH_PATH  = 'ground-truth/'
+if not os.path.exists(GROUND_TRUTH_PATH):
+    os.makedirs(GROUND_TRUTH_PATH)
+for filename in os.listdir(PATH_TO_XML):
+    if filename.lower().endswith(('.xml')):
+        xml_name = os.path.join(PATH_TO_XML, filename)
+        with open(xml_name, "r") as f:
+            f1 = open(GROUND_TRUTH_PATH + "2007_" + filename[:-4] + ".txt", "w")
+            for line in f.readlines():
+                classes = re.match(r".*<name>(.*)</name>.*", line, re.I)
+                xmin = re.match(r".*<xmin>(.*)</xmin>.*", line, re.I)
+                ymin = re.match(r".*<ymin>(.*)</ymin>.*", line, re.I)
+                xmax = re.match(r".*<xmax>(.*)</xmax>.*", line, re.I)
+                ymax = re.match(r".*<ymax>(.*)</ymax>.*", line, re.I)
+                if classes:
+                    f1.write(classes.group(1) + " ")
+                if xmin:
+                    f1.write(xmin.group(1) + " ")
+                if ymin:
+                    f1.write(ymin.group(1) + " ")
+                if xmax:
+                    f1.write(xmax.group(1) + " ")
+                if ymax:
+                    f1.write(ymax.group(1) + "\n")
+            f1.close()
+        f.close()
+
+def voc_ap(rec, prec):
+    rec.insert(0, 0.0)
+    rec.append(1.0)
+    mrec = rec[:]
+    prec.insert(0, 0.0)
+    prec.append(0.0)
+    mpre = prec[:]
+    for i in range(len(mpre) - 2, -1, -1):
+        mpre[i] = max(mpre[i], mpre[i + 1])
+    i_list = []
+    for i in range(1, len(mrec)):
+        if mrec[i] != mrec[i - 1]:
+                        低光照下遥感目标检测的性能评价系统
+
+            i_list.append(i)
+    ap = 0.0
+    for i in i_list:
+        ap += ((mrec[i] - mrec[i - 1]) * mpre[i])
+    return ap
+
+TEMP_FILES_PATH = ".temp_files"
+if not os.path.exists(TEMP_FILES_PATH):
+    os.makedirs(TEMP_FILES_PATH)
+
+ground_truth_files_list = glob.glob('ground-truth/*.txt')
+ground_truth_files_list.sort()
+gt_counter_per_class = {}
+counter_images_per_class = {}
+for txt_file in ground_truth_files_list:
+    file_id = txt_file.split(".txt", 1)[0]
+    file_id = os.path.basename(os.path.normpath(file_id))
+    f = open(txt_file)
+    lines_list = f.readlines()
+    f.close()
+    lines_list = [x.strip() for x in lines_list]
+    bounding_boxes = []
+    already_seen_classes = []
+    for line in lines_list:
+        class_name, left, top, right, bottom = line.split()
+        bbox = left + " " + top + " " + right + " " + bottom
+        bounding_boxes.append({"class_name": class_name, "bbox": bbox, "used": False})
+        if class_name in gt_counter_per_class:
+            gt_counter_per_class[class_name] += 1
+        else:
+            gt_counter_per_class[class_name] = 1
+
+        if class_name not in already_seen_classes:
+            if class_name in counter_images_per_class:
+                counter_images_per_class[class_name] += 1
+            else:
+                counter_images_per_class[class_name] = 1
+            already_seen_classes.append(class_name)
+    # 将每个真实标签数据写入一个临时的.json              文件中
+    with open(TEMP_FILES_PATH + "/" + file_id + "_ground_truth.json", 'w') as outfile:
+        json.dump(bounding_boxes, outfile)
+
+gt_classes = list(gt_counter_per_class.keys())
+gt_classes = sorted(gt_classes)
+                        低光照下遥感目标检测的性能评价系统
+
+n_classes = len(gt_classes)
+
+predicted_files_list = glob.glob('predicted/*.txt')
+predicted_files_list.sort()
+for class_index, class_name in enumerate(gt_classes):
+    bounding_boxes = []
+    for txt_file in predicted_files_list:
+        file_id = txt_file.split(".txt", 1)[0]
+        file_id = os.path.basename(os.path.normpath(file_id))
+        f = open(txt_file)
+        lines = f.readlines()
+        f.close()
+        lines = [x.strip() for x in lines]
+        for line in lines:
+            tmp_class_name, confidence, left, top, right, bottom = line.split()
+            if tmp_class_name == class_name:
+                bbox = left + " " + top + " " + right + " " + bottom
+                bounding_boxes.append({"confidence": confidence, "file_id": file_id, "bbox":
+bbox})
+    bounding_boxes.sort(key=lambda x: float(x['confidence']), reverse=True)
+
+    with open(TEMP_FILES_PATH + "/" + class_name + "_predictions.json", 'w') as outfile:
+        json.dump(bounding_boxes, outfile)
+
+MINOVERLAP = 0.5 # iou 阈值
+sum_AP = 0.0
+results_files_path = "results"
+if os.path.exists(results_files_path):
+    shutil.rmtree(results_files_path)
+os.makedirs(results_files_path)
+with open(results_files_path + "/results.txt", 'w') as results_file:
+    results_file.write("# mAP of all classes\n")
+    count_true_positives = {}
+    for class_index, class_name in enumerate(gt_classes):
+        count_true_positives[class_name] = 0
+        # 导入预测数据
+        predictions_file = TEMP_FILES_PATH + "/" + class_name + "_predictions.json"
+        predictions_data = json.load(open(predictions_file))
+
+        nd = len(predictions_data)
+        tp = [0] * nd
+        fp = [0] * nd
+        for idx, prediction in enumerate(predictions_data):
+            file_id = prediction["file_id"]
+                        低光照下遥感目标检测的性能评价系统
+
+            gt_file = TEMP_FILES_PATH + "/" + file_id + "_ground_truth.json"
+            ground_truth_data = json.load(open(gt_file))
+            ovmax = -1
+            gt_match = -1
+            # 导入预测框
+            bb = [float(x) for x in prediction["bbox"].split()]
+            for obj in ground_truth_data:
+                if obj["class_name"] == class_name:
+                    bbgt = [float(x) for x in obj["bbox"].split()]
+                    bi = [max(bb[0], bbgt[0]), max(bb[1], bbgt[1]), min(bb[2], bbgt[2]),
+min(bb[3], bbgt[3])]
+                    iw = bi[2] - bi[0] + 1
+                    ih = bi[3] - bi[1] + 1
+                    if iw > 0 and ih > 0:
+                       # 计算   IOU
+                       ua = (bb[2] - bb[0] + 1) * (bb[3] - bb[1] + 1) + (bbgt[2] - bbgt[0]
+                                                                        + 1) *
+(bbgt[3] - bbgt[1] + 1) - iw * ih
+                       ov = iw * ih / ua
+                       if ov > ovmax:
+                           ovmax = ov
+                           gt_match = obj
+
+            min_overlap = MINOVERLAP
+            if ovmax >= min_overlap:
+                if not bool(gt_match["used"]):
+                    tp[idx] = 1
+                    gt_match["used"] = True
+                    count_true_positives[class_name] += 1
+                    with open(gt_file, 'w') as f:
+                       f.write(json.dumps(ground_truth_data))
+                else:
+                    fp[idx] = 1
+            else:
+                fp[idx] = 1
+                if ovmax > 0:
+                    status = "INSUFFICIENT OVERLAP"
+        # 计算召回率和精度
+        cumsum = 0
+        for idx, val in enumerate(fp):
+            fp[idx] += cumsum
+            cumsum += val
+        cumsum = 0
+        for idx, val in enumerate(tp):
+                        低光照下遥感目标检测的性能评价系统
+
+            tp[idx] += cumsum
+            cumsum += val
+        rec = tp[:]
+        for idx, val in enumerate(tp):
+            rec[idx] = float(tp[idx]) / gt_counter_per_class[class_name]
+        prec = tp[:]
+        for idx, val in enumerate(tp):
+            prec[idx] = float(tp[idx]) / (fp[idx] + tp[idx])
+        # 计算  AP
+        ap = voc_ap(rec[:], prec[:])
+        sum_AP += ap
+        text = "{0:.2f}%".format(ap * 100) + " = " + class_name + " AP "
+    # 计算  mAP
+    mAP = sum_AP / n_classes
+    text = "mAP = {0:.2f}%".format(mAP * 100)
+    results_file.write(text + "\n")
+shutil.rmtree(TEMP_FILES_PATH)
+
+pred_counter_per_class = {}
+for txt_file in predicted_files_list:
+    f = open(txt_file)
+    lines_list = f.readlines()
+    f.close()
+    lines_list = [x.strip() for x in lines]
+    for line in lines_list:
+        class_name = line.split()[0]
+        if class_name in pred_counter_per_class:
+            pred_counter_per_class[class_name] += 1
+        else:
+            pred_counter_per_class[class_name] = 1
+pred_classes = list(pred_counter_per_class.keys())
+with open(results_files_path + "/results.txt", 'a') as results_file:
+    results_file.write("\n# Number of ground-truth objects per class\n")
+    for class_name in sorted(gt_counter_per_class):
+        results_file.write(class_name + ": " + str(gt_counter_per_class[class_name]) + "\n")
+
+for class_name in pred_classes:
+    if class_name not in gt_classes:
+        count_true_positives[class_name] = 0
+with open(results_files_path + "/results.txt", 'a') as results_file:
+    results_file.write("\n# Number of predicted objects per class\n")
+    for class_name in sorted(pred_classes):
+        n_pred = pred_counter_per_class[class_name]
+        text = class_name + ": " + str(n_pred)
+                        低光照下遥感目标检测的性能评价系统
+
+        text += " (tp:" + str(count_true_positives[class_name]) + ""
+        text += ", fp:" + str(n_pred - count_true_positives[class_name]) + ")\n"
+        results_file.write(text)
+results_file.close()
+
+(3) IOU
+def BoundingBox_Denote(bbox=[], mode=True):
+    '''边界框的表示形式的转换
+        bbox: 包含(x1, y1, x2, y2)四个位置信息的数据格式
+        mode: 边界框数据表示的模式
+             True: to (x1,y1,x2,y2)
+             False: to (x,y,w,h)
+
+        return: 返回形式转换后的边界框数据
+    '''
+    denote_bbox = [] # 转换表示的边界框
+
+    if mode is True: # 保持原形式
+        denote_bbox = bbox
+    else: # 转换为(center_x, center_y, w, h)
+        center_x = (bbox[0]+bbox[2]) / 2.0
+        center_y = (bbox[1]+bbox[3]) / 2.0
+        w = bbox[2] - bbox[0]
+        h = bbox[3] - bbox[1]
+        denote_bbox = [center_x, center_y, w, h]
+
+    # 返回表示转换的边界框表示
+    denote_bbox = np.asarray(denote_bbox, dtype='float32')
+    return denote_bbox
+
+def draw_rectangle(bbox=[], mode=True, color='k'):
+    '''绘制矩形框
+        bbox：边界框数据（默认框数据不超过图片边界）
+        mode: 边界框数据表示的模式
+             True: to (x1,y1,x2,y2)
+             False: to (x,y,w,h)
+        color: 边框颜色
+    '''
+    if mode is True: # to (x1,y1,x2,y2)
+        x = bbox[0]
+        y = bbox[1]
+        w = bbox[2] - bbox[0] + 1 # 考虑到实际长度由像素个数决定，因此加             1（可按坐标
+                                 轴上两点间的点数推导）
+        h = bbox[3] - bbox[1] + 1
+                        低光照下遥感目标检测的性能评价系统
+
+    else: # to (x,y,w,h)
+        # 默认绘制的框不超出边界
+        x = bbox[0] - bbox[2] / 2.0
+        y = bbox[1] - bbox[3] / 2.0
+        w = bbox[2]
+        h = bbox[3]
+
+    # 绘制边界框
+    # patches.Rectangle 需要传入左上角坐标、矩形区域的宽度、高度等参数
+    # 获取绘制好的图形的返回句柄——用于添加到当前的图像窗口中
+    rect = patches.Rectangle((x, y), w, h,
+                            linewidth=1,      # 线条宽度
+                            edgecolor=color, # 线条颜色
+                            linestyle='-')
+    return rect
+
+def bbox_2leftup_2rightdown(bbox):
+    '''计算 bbox 的左上右下顶点
+        bbox：框数据——xywh
+    '''
+    x1 = bbox[0] - bbox[2] / 2.0
+    y1 = bbox[1] - bbox[3] / 2.0
+    x2 = bbox[0] + bbox[2] / 2.0
+    y2 = bbox[1] + bbox[3] / 2.0
+
+    return x1, y1, x2, y2
+
+def box_iou_solve(bbox1, bbox2, mode=True):
+    '''计算两个框之间的      IoU 值
+        bbox1: 框数据
+        bbox2: 框数据
+        mode: 框数据表示形式
+              True: xyxy
+              False: xywh
+
+        IoU 的 intersection 的左上右下顶点:    左上点为
+
+        return IoU, (r_bbox1, r_bbox2, inter_bbox)
+             PS：
+                IoU： 交并比值
+                r_bbox1：转换为   xyxy 形式的   bbox1
+                r_bbox2：转换为   xyxy 形式的   bbox2
+                inter_bbox: 形式为 xyxy 的交集位置
+    '''
+                    低光照下遥感目标检测的性能评价系统
+
+if mode is True: # bbox 数据格式: xyxy
+    # 左上右下顶点坐标
+    b1_x1, b1_y1, b1_x2, b1_y2 = bbox1[0], bbox1[1], bbox1[2], bbox1[3]
+    b2_x1, b2_y1, b2_x2, b2_y2 = bbox2[0], bbox2[1], bbox2[2], bbox2[3]
+    # 框的长宽:长度由具体的像素个数决定，因此需要加                     1
+    b1_w, b1_h = bbox1[2] - bbox1[0] + 1.0, bbox1[3] - bbox1[1] + 1.0
+    b2_w, b2_h = bbox2[2] - bbox2[0] + 1.0, bbox1[3] - bbox1[1] + 1.0
+else: # bbox 数据格式:  xywh
+    # 左上右下顶点坐标
+    b1_x1, b1_y1, b1_x2, b1_y2 = bbox_2leftup_2rightdown(bbox1)
+    b2_x1, b2_y1, b2_x2, b2_y2 = bbox_2leftup_2rightdown(bbox2)
+    # 框的长宽
+    b1_w, b1_h = bbox1[2], bbox1[3]
+    b2_w, b2_h = bbox2[2], bbox2[3]
+
+# 各自的面积
+s1 = b1_w * b1_h
+s2 = b2_w * b2_h
+
+# 交集面积
+# 如果考虑多个框进行计算交集——那么应该使用                    np.maximum——进行逐位比较
+inter_x1 = max(b1_x1, b2_x1) # 交集区域的左上角
+inter_y1 = max(b1_y1, b2_y1)
+inter_x2 = min(b1_x2, b2_x2) # 交集区域的右下角
+inter_y2 = min(b1_y2, b2_y2)
+
+# 长度由具体的像素个数决定，因此需要加                 1
+inter_w = max(inter_x2 - inter_x1 + 1.0, 0)
+inter_h = max(inter_y2 - inter_y1 + 1.0, 0)
+intersection = inter_w * inter_h
+
+# 并集面积
+union_area = s1 + s2 - intersection
+
+# 计算  IoU 交并集
+IoU = intersection / union_area
+
+# 整合坐标信息——用于展示交集可视化
+# 返回数据均以      xyxy 表示
+r_bbox1 = b1_x1, b1_y1, b1_x2, b1_y2
+r_bbox2 = b2_x1, b2_y1, b2_x2, b2_y2
+inter_bbox = inter_x1, inter_y1, inter_x2, inter_y2
+
+print(format(IoU,'.2f'))
+                        低光照下遥感目标检测的性能评价系统
+
+    return IoU, (r_bbox1, r_bbox2, inter_bbox)
+
+fig = plt.figure(figsize=(12, 8))
+ax = plt.gca()
+
+# 图片路径
+img_path = os.path.join(os.getcwd(), 'picture', '3.jpg')
+
+img = image.imread(img_path) # 读取图片数据
+plt.imshow(img) # 展示图片
+
+bbox1 = [240, 50, 430, 350]
+bbox2 = [310, 100, 500, 420]
+denote_mode = True # 数据格式模式
+denote_bbox1 = BoundingBox_Denote(bbox=bbox1, mode=denote_mode) # 形式转换
+denote_bbox2 = BoundingBox_Denote(bbox=bbox2, mode=denote_mode)
+iou, bboxs = box_iou_solve(bbox1, bbox2, mode=denote_mode) # 计算 IoU 交并比
+print(type(iou))
+Iou=str(iou)
+print(type(Iou))
+
+# 取出  IoU 转换解析后的      bbox 数据
+r_bbox1 = bboxs[0]
+r_bbox2 = bboxs[1]
+inter_bbox = bboxs[2]
+
+# 利用数据进行绘制矩形框
+# mode=True: bbox 数据应该输入_xyxy
+rect1 = draw_rectangle(r_bbox1, mode=True,color='c')
+rect2 = draw_rectangle(r_bbox2, mode=True,color='c')
+rect3 = draw_rectangle(inter_bbox, mode=True,color='c')
+
+ax.add_patch(rect1) # 将绘制的矩形添加到图片上
+ax.add_patch(rect2)
+ax.add_patch(rect3)
+rect1.set(alpha=0.5)
+rect2.set(alpha=0.5)
+
+plt.text(300, 50, "IOU="+Iou, size=15, alpha=0.2,color='k')
+
+plt.show()
+
+(4) NMS
+def py_cpu_nms(nms_show, dets, thresh): # nms 操作
+                    低光照下遥感目标检测的性能评价系统
+
+"Pure Python NMS baseline"
+# x1、y1、x2、y2  以及   score 赋值
+x1 = dets[:, 0]
+y1 = dets[:, 1]
+x2 = dets[:, 2]
+y2 = dets[:, 3]
+scores = dets[:, 4]
+
+areas = (y2 - y1 + 1) * (x2 - x1 + 1) # 每一个检测框的面积
+print("all_areas:", areas)
+
+order = scores.argsort()[::-1] # 按照 score 置信度降序排序
+print("order:", order)
+
+keep = [] # 保留的结果框集合
+k = 0
+show_boxid = order
+print("show_boxid", show_boxid)
+while order.size > 0:
+    i = order[0] # every time the first is the biggst, and add it directly
+    keep.append(i) # 保留该类剩余     box 中得分最高的一个
+    print("\nkeep(被留下来的框   id):", keep)
+    # 得到相交区域,比左上大和比右下小
+    '''np.maximum(X, Y, out=None) X 和 Y 逐位进行比较,选择最大值'''
+    xx1 = np.maximum(x1[i], x1[order[1:]])
+    yy1 = np.maximum(y1[i], y1[order[1:]])
+    xx2 = np.minimum(x2[i], x2[order[1:]])
+    yy2 = np.minimum(y2[i], y2[order[1:]])
+    print("xx1,yy1:", xx1, yy1)
+    print("xx2,yy2:", xx2, yy2)
+    print("w,h:", xx2 - xx1 + 1, yy2 - yy1 + 1)
+    # plt.scatter([xx1,xx2], [yy1,yy2], s=50, c='y')#框左上角蓝色
+
+    # 计算相交的面积,不重叠时面积为             0
+    w = np.maximum(0, xx2 - xx1 + 1) # the weights of overlap
+    h = np.maximum(0, yy2 - yy1 + 1) # the height of overlap
+    inter = w * h
+    print("w*h:", inter)
+    # 计算  IoU：重叠面积      /（面积   1+面积  2-重叠面积）
+    iou = inter / (areas[i] + areas[order[1:]] - inter)
+    print("---iou:", iou)
+    # 保留  IoU 小于阈值的     box
+    '''去掉 keep 剩下的框按顺序重新排序'''
+    indx = np.where(iou <= thresh)[0]
+                        低光照下遥感目标检测的性能评价系统
+
+        dedx = np.where(iou > thresh)[0]
+        print("order[0]:", order[0])
+        show_boxid = np.delete(show_boxid, np.where(show_boxid == order[0])[0], axis=0)
+        print("show_boxid:", np.append(keep, show_boxid))
+        delete_boxid = show_boxid[dedx]
+        show_boxid = show_boxid[indx]
+        # print("indx:",indx)
+        print("after_iou_show_boxid:", np.append(keep, show_boxid))
+        print("after_iou_delete_boxid:", delete_boxid, '\n')
+        k = k + 1
+        '''绘制动图'''
+        ax1 = nms_show.add_subplot(1, 2, 1)
+        ax1.set_title('begin_nms {} \nkeep:{} score:{}({})'.format(k, order[0], scores[order[0]],
+k))
+        plot_bbox(dets, 'k', show_ids=np.arange(9), keep_id=order[0])
+
+        ax2 = nms_show.add_subplot(1, 2, 2)
+        ax2.set_title('after_nms {} \nkeep:{} delete:{}(iou={})'.format(k, order[0], delete_boxid,
+iou[dedx]))
+        plot_bbox(dets[np.append(show_boxid, keep)], 'b', np.append(show_boxid, keep))
+        plt.pause(5)
+        ax1.remove()
+        ax2.remove()
+        '''置信度排前的数值给取出，剩下的数构成新的数组'''
+        order = order[indx + 1]
+        print("-----------afer_order:", order, '-----------')
+    return keep
+
+
+def plot_bbox(dets, c='k', show_ids=[], keep_id=0):
+    x1 = dets[:, 0]
+    y1 = dets[:, 1]
+    x2 = dets[:, 2]
+    y2 = dets[:, 3]
+    score = dets[:, 4]
+    # print(dets.shape)
+    # plt.scatter(x1, y1, s=25, c='b', alpha=0.6)#框左上角蓝色
+    # plt.scatter(x2, y2, s=25, c='r', alpha=0.6)#框右下角红色
+    plt.plot([x1, x2], [y1, y1], c)
+    plt.plot([x1, x1], [y1, y2], c)
+    plt.plot([x1, x2], [y2, y2], c)
+    plt.plot([x2, x2], [y1, y2], c)
+    plt.xlim((60, 450))
+    plt.ylim((450, 60))
+                        低光照下遥感目标检测的性能评价系统
+
+    '''改变坐标轴位置'''
+    ax = plt.gca()
+    ax.spines["top"].set_color("k")
+    ax.xaxis.set_ticks_position("top")
+
+    for i in range(len(show_ids)):
+        plt.text(x1[i], y1[i] + 7, "(%d)%.2f" % (show_ids[i], score[i]), \
+                 fontdict={'size': 10, 'color': 'r'}, bbox={'facecolor': 'blue', 'alpha': 0.1})
+    if keep_id != 0:
+        ax.add_patch(
+            plt.Rectangle((x1[keep_id], y1[keep_id]), x2[keep_id] - x1[keep_id] + 1, y2[keep_id]
+- y1[keep_id] + 1,
+                         color="y", fill=True, linewidth=2))
+
+
+def main():
+    boxes = np.array([
+        [100, 100, 210, 210, 0.72], # 0
+        [280, 290, 420, 420, 0.8], # 1
+        [220, 220, 320, 330, 0.92], # 2
+        [105, 90, 220, 210, 0.71], # 3
+        [230, 240, 325, 330, 0.81], # 4
+        [305, 300, 420, 420, 0.9], # 5
+        [215, 225, 305, 328, 0.6], # 6
+        [150, 260, 290, 400, 0.99], # 7
+        [102, 108, 208, 208, 0.72]]) # 8 #9 个框
+
+    plt.ion()
+    fig = plt.figure(figsize=[14, 9])
+    ax1 = plt.subplot(1, 2, 1)
+    ax1.set_title('before_nms')
+
+    ax2 = plt.subplot(1, 2, 2)
+    ax2.set_title('after_nms')
+
+    plt.sca(ax1) # 选择子图  1
+    plot_bbox(boxes, 'k', show_ids=np.arange(9), keep_id=0) # before nms
+
+    keep = py_cpu_nms(fig, boxes, thresh=0.7)
+    print("last_keep:", keep)
+    plt.ioff()
+    plt.pause(2)
+    plt.close('all')
+                        低光照下遥感目标检测的性能评价系统
+
+if __name__ == "__main__":
+    main()
+
+(5) ROC
+#数据导入和预处理
+svm_result=r'C:\Users\yaoyangxu\Desktop\mAP\svm_result.txt'
+data=[]
+with open (svm_result,'r') as fo:
+    for line in fo:
+        line=line.strip().split('\t')
+        data.append([int(line[0]),int(line[1]),float(line[2])])
+
+#ROC 坐标点计算
+data=np.array(data)
+FPR,TPR,threshold=roc_curve(data[:,1],data[:,2],pos_label=1)
+#data[:,1]测试集的结果,data[:,2]模型预测的结果,pos_label=1      表示正样本
+
+#AUC 值计算
+AUC=auc(FPR,TPR)
+
+#AUC=auc(FPR)
+#ROC 曲线绘制
+plt.figure()
+plt.title('ROC CURVE (AUC={:.2f})'.format(AUC))
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.xlim([0.0,1.0])
+plt.ylim([0.0,1.0])
+plt.plot(FPR,TPR,color='g')
+plt.plot([0, 1], [0, 1], color='m', linestyle='--')
+plt.show()
